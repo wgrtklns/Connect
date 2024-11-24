@@ -2,9 +2,11 @@ const Router = require('express')
 const router = new Router()
 const userController = require('../controllers/userController')
 const authMiddleware = require('../middleware/authMiddleware')
-// TODO: test /auth
-router.post('/registration', userController.registration)
+
+router.post('/registration', userController.registration) // localhost/api/registration
 router.post('/login', userController.login)
-router.get('/auth', authMiddleware, userController.check) // authentication or authorization?
+router.get('/authorization', authMiddleware, userController.check) // authorization
+router.get('/users',userController.getUsers)
+router.delete('/delete/:id', userController.deleteUser)
 
 module.exports = router
