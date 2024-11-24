@@ -9,6 +9,15 @@ const User = sequelize.define('user', {
     role: {type: DataTypes.STRING, defaultValue: "USER"}
 })
 
+const Friends = sequelize.define('friends', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    first_id: {type: DataTypes.INTEGER, allowNull: false, references: {model: 'user', key: 'id'}},
+    second_id: {type: DataTypes.INTEGER, allowNull: false, references: {model: 'user', key: 'id'}}
+})
+
+User.belongsToMany(User, {through: Friends, foreignKey: 'first_id', otherKey: 'second_id'})
+
 module.exports = {
-    User
+    User,
+    Friends
 }
