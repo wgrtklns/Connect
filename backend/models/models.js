@@ -24,6 +24,6 @@ User.hasMany(Friends, { foreignKey: 'first_id'})
 User.hasMany(Friends, { foreignKey: 'second_id'})
 
 module.exports = {
-    User,
+    User, 
     Friends
 };
