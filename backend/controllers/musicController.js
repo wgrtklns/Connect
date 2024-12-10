@@ -2,6 +2,7 @@ const {MusicFile, FavoriteList, User} = require('../models/models')
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
+const { Sequelize } = require('../db')
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -22,7 +23,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 class MusicController {
-    async uploadMusic(req, res) { // next?
+    async uploadMusic(req, res) { // next? 
         try {
             upload.single('audio')(req, res, async (err) => {
                 if (err) {
@@ -58,10 +59,9 @@ class MusicController {
         }
     }
 
-    async getMusic(req, res) { // TODO: Add json with name and artist
+    async getMusicFile(req, res) { 
         try {
             const { id } = req.params
-            console.log(id)
             const musicFile = await MusicFile.findByPk(id)
             if (!musicFile) {
                 return res.status(404).json({ message: "Music file not found" })
@@ -71,6 +71,20 @@ class MusicController {
         } catch (err) {
             console.log(err)
             return res.status(500).json({message: "Error getting music file"})
+        }
+    }
+
+    async getMusicJSON(req, res) {
+        try {
+            const { id } = req.params
+            const musicFile = await MusicFile.findByPk(id)
+            if (!musicFile) {
+                return res.status(500).json({message: "JSON file not found"})
+            }
+            res.json({audioname: musicFile.audioname, artist: musicFile.artist})
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({message: "Error JSON music"})
         }
     }
 
@@ -90,17 +104,65 @@ class MusicController {
         }
     }
     
-    async addToFavorite(req, res) {
-
-    }
+    // Favorites list
  
     async getFavorites(req, res) {
-
+        try {
+            const { username } = req.params
+            const user = await User.findOne({where: { username }})
+            if (!user) {
+                return res.status(500).json({message: "User not found"})
+            }
+            const favList = await FavoriteList.findAll({where: {user_id: user.id}})
+            return res.json({favList})
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({message: "Error getting favorites"})
+        }
     } 
 
-    // async getFavSong(req, res) {}
+    async addToFavorite(req, res) {
+        try {
+            const {user_id, original_name, audioname, artist} = req.body
+            const user = await User.findOne({where: { id: user_id }})
+            if (!user ) {
+                return res.status(500).json({message: "User not found"})
+            }
+            const checkSong = await FavoriteList.findOne({where: {
+                user_id,
+                [Sequelize.Op.or]: [
+                    {original_name: original_name}, {audioname: audioname}
+                ]
+            }})
+            if (checkSong) {
+                return res.status(400).json({ message: "Song already in the list" });
+            }
+            const song = await FavoriteList.create({
+                user_id, original_name, audioname, artist
+            })
+            return res.json({song})
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({message: "Error add music"})
+        }
+    }
 
-    // async deleteFromFav(req, res) {}
+    async deleteFromFav(req, res) {
+        try {
+            const {user_id, audioname} = req.body
+            const song = await FavoriteList.findOne({where: {user_id, audioname}})
+            if (!song) {
+                return res.status(400).json({ message: "Song not found" });
+            }
+            const result = await FavoriteList.destroy({where: {user_id, audioname}})
+            res.json({result})
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({message: "Error delete music"})
+        }
+    }
+
+    // Test functions
 
     async getAll(req, res) {
         const musics = await MusicFile.findAll()

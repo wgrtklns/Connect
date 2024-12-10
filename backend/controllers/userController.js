@@ -76,7 +76,7 @@ class UserController {
                 return res.status(404).json({ message: 'User not found' });
             }
             const result = await User.destroy({where: {id}})
-            if (result === 0) {
+            if (!result) {
                 return res.status(400).json({ message: 'Failed to delete user' });
             }
             return res.json({result})
