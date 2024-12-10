@@ -29,6 +29,7 @@ const MusicFile = sequelize.define('musicfile', {
     date: {type: DataTypes.DATE, allowNull: false},
     size: {type: DataTypes.INTEGER, allowNull: false},
     path: {type: DataTypes.STRING, allowNull: false},
+    recipient_id: {type: DataTypes.INTEGER, references: { model: 'users', key: 'id' }, allowNull: false}
 });
 
 const FavoriteList = sequelize.define('favorite_list', {
@@ -44,6 +45,9 @@ User.hasMany(Friends, { foreignKey: 'second_id'})
 
 User.hasMany(FavoriteList, { foreignKey: 'user_id'})
 FavoriteList.belongsTo(User, { foreignKey: 'user_id'})
+
+User.hasMany(MusicFile, { foreignKey: 'recipient_id'})
+MusicFile.belongsTo(User, { foreignKey: 'user_id'});
 
 module.exports = {
     User, 

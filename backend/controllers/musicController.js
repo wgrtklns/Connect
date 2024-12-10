@@ -23,19 +23,18 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 
 class MusicController {
-    async uploadMusic(req, res) { // next? 
+    async uploadMusic(req, res) { // next? // TODO: Add text message
         try {
             upload.single('audio')(req, res, async (err) => {
                 if (err) {
                     return res.status(500).json({ message: "Error while uploading file" })
                 }
-
                 const { originalname, filename, path, size } = req.file
-                const { audioname, artist } = req.body
+                const { audioname, artist, recipient_id } = req.body // TODO: Add random id OR friends id
                 const date = new Date()
 
                 const created_file = await MusicFile.create({
-                    original_name: originalname, filename, audioname, artist, date, size, path
+                    original_name: originalname, filename, audioname, artist, date, size, path, recipient_id
                 })
 
                 setTimeout(async () => {
@@ -101,6 +100,20 @@ class MusicController {
         } catch (err) {
             console.log(err)
             return res.status(500).json({message: "Error while deleting file"})
+        }
+    }
+
+    async checkMusic(req, res) {
+        try {
+            const {user_id} = req.params
+            const check = await MusicFile.findAll({where: {recipient_id: user_id}})
+            if (!check) {
+                return res.json({message: "You don`t have music"})
+            }
+            return res.json({check})
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({message: "Error check music!"})
         }
     }
     

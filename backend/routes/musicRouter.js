@@ -6,6 +6,7 @@ router.post('/upload_m', musicController.uploadMusic)
 router.get('/jsonfile/:id', musicController.getMusicJSON)
 router.get('/musicfile/:id', musicController.getMusicFile)
 router.delete('/delete_m', musicController.deleteMusic)
+router.get('/check_music/:user_id', musicController.checkMusic)
 
 router.get('/favorites/:username', musicController.getFavorites)
 router.post('/add_favorites', musicController.addToFavorite)

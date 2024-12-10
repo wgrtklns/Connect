@@ -85,6 +85,20 @@ class UserController {
             return res.status(500).json({message: "Delete error!"})
         }
     }
+
+    async getUser(req, res) {
+        try {
+            const {username} = req.params
+            const user = await User.findOne({where: {username}})
+            if (!user) {
+                return res.status(500).json({message: "User not found!"})
+            }
+            return res.json({user})
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({message: "User error!"})
+        }
+    } 
 }
 
 module.exports = new UserController()
