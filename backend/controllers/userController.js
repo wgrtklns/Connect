@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {User} = require('../models/models')
-const { Op } = require('sequelize')
+const {User, Friends, FavoriteList} = require('../models/models')
+const { Op, where } = require('sequelize')
+const { Sequelize } = require('../db')
 
 const generateJwt = (id, email, username, role) => {
     return jwt.sign(
@@ -89,11 +90,19 @@ class UserController {
     async getUser(req, res) {
         try {
             const {username} = req.params
-            const user = await User.findOne({where: {username}})
-            if (!user) {
+            const user_info = await User.findOne({where: {username}})
+            if (!user_info) {
                 return res.status(500).json({message: "User not found!"})
             }
-            return res.json({user})
+            const user_friends = await Friends.findAll({where: {
+                [Op.or]: [
+                    { first_id: user_info.id },
+                    { second_id: user_info.id }
+                ]
+            }})
+            const user_music = await FavoriteList.findAll({where: {user_id: user_info.id}})
+
+            return res.json({user_info, user_friends, user_music})
         } catch (err) {
             console.log(err)
             return res.status(500).json({message: "User error!"})
