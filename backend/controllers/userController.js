@@ -60,11 +60,13 @@ class UserController {
 
     async check(req, res, next) {
         const token = generateJwt(req.user.id, req.user.email, req.user.username, req.user.role)
-        // console.log(req.user) all good!
-        return res.json({token})
+        return res.json({token}) 
     }
 
     async getUsers(req, res) {
+        if (req.user.role !== 'ADMIN') {
+            return res.status(403).json({ message: 'Access denied. Admins only.' })
+        }
         const users = await User.findAll()
         return res.json({users})
     }
@@ -72,6 +74,9 @@ class UserController {
     async deleteUser(req, res) {
         const {id} = req.params
         try {
+            if (req.user.role !== 'ADMIN') {
+                return res.status(403).json({ message: 'Access denied. Admins only.' })
+            }
             const user = await User.findByPk(id);
             if (!user) {
                 return res.status(404).json({ message: 'User not found' });
@@ -89,6 +94,9 @@ class UserController {
 
     async getUser(req, res) {
         try {
+            if (req.user.role !== 'ADMIN') {
+                return res.status(403).json({ message: 'Access denied. Admins only.' })
+            }
             const {username} = req.params
             const user_info = await User.findOne({where: {username}})
             if (!user_info) {
@@ -108,6 +116,29 @@ class UserController {
             return res.status(500).json({message: "User error!"})
         }
     } 
+
+    async makeAdmin(req, res) {
+        try {
+            if (req.user.role !== 'ADMIN') {
+                return res.status(403).json({ message: 'Access denied. Admins only.' })
+            }
+            const {username} = req.params
+            let result = ""
+            const user = await User.findOne({where: {username}})
+            if (!user) {
+                return res.status(500).json({message: "User not found!"})
+            }
+            if (user.role == "ADMIN") {
+                result = await user.update({ role: "USER" })
+            } else {
+                result = await user.update({ role: "ADMIN" })
+            }
+            return res.json({message: "User role updated successfully", user: result})
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({message: "Admin error!"})
+        }
+    }
 }
 
 module.exports = new UserController()
