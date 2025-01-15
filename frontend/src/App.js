@@ -1,10 +1,19 @@
-import './App.css';
-import SignIn from './components/SignIn';
-import SignUp from './components/SignUp';
+import React from 'react';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import FriendsList from './components/FriendsList';
+import Profile from './components/Profile';
+import MusicList from './components/MusicList';
+
 function App() {
   return (
-    <SignUp/>
+    <div>
+      <Header/>
+      <FriendsList/>
+      <Footer/>
+    </div>
   );
 }
+
 
 export default App;

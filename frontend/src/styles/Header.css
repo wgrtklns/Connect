@@ -1,0 +1,37 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 540px;
+    height: 74px;
+    background-color: #1c1c1c;
+    color: #32ff7e;
+    border: 2px solid #32ff7e;
+    border-radius: 15px; 
+    margin: auto; 
+}
+
+.header-button {
+    height: 104%;
+    width: 100%;
+    background-color: #1c1c1c;
+    color: #32ff7e;
+    border: 2px solid #32ff7e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0; 
+}
+
+.header-button:hover {
+    border: none
+}
+
+.header-button:first-child {
+    border-radius: 15px 0 0 15px; 
+}
+
+.header-button:last-child {
+    border-radius: 0 15px 15px 0; 
+}
+
