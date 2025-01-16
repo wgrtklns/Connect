@@ -2,20 +2,20 @@ import React from 'react';
 
 const Track = () => {
     return (
-        <h1>Track</h1>
+        <div style={styles.container}>
+            <h2>username</h2>
+            <div style={styles.profileCircle}></div>
+            <h3>TRACK NAME - ARTIST</h3>
+            <div style={styles.trackControls}>
+                <button style={styles.trackButton}>S</button>
+                <button style={styles.trackButton}>L</button>
+            </div>
+            <button style={styles.playButton}>▶︎ / ❚❚</button>
+        </div>
     );
 };
 
-// Registration Component
-const Registration = () => (
-    <div style={styles.container}>
-      <h2>Connect</h2>
-      <button style={styles.authButton}>Sign In</button>
-      <p>- or -</p>
-      <button style={styles.authButton}>Sign Up</button>
-    </div>
-  );
-  
+
   // MusicForm Component
   const MusicForm = () => (
     <div style={styles.container}>
@@ -31,20 +31,6 @@ const Registration = () => (
         </label>
       </div>
       <button style={styles.addButton}>+</button>
-    </div>
-  );
-  
-  // Track Component
-  const s = () => ( // Track
-    <div style={styles.container}>
-      <h2>username</h2>
-      <div style={styles.profileCircle}></div>
-      <h3>TRACK NAME - ARTIST</h3>
-      <div style={styles.trackControls}>
-        <button style={styles.trackButton}>S</button>
-        <button style={styles.trackButton}>L</button>
-      </div>
-      <button style={styles.playButton}>▶︎ / ❚❚</button>
     </div>
   );
   
