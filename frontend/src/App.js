@@ -8,12 +8,19 @@ import Registration from './components/Registration';
 import SignIn from './components/SignIn';
 import Track from './components/Track';
 import MusicForm from './components/MusicForm';
+import SignUp from './components/SignUp';
 
 function App() {
   return (
     <div>
       <Header/>
-      <MusicForm/>
+        {/* <Track/>      */}
+        {/* <MusicForm/> */}
+        {/* <FriendsList/> */}
+        {/* <MusicList/> */}
+        {/* <MusicForm/> */}
+        {/* <Track/> */}
+        {/* <Profile/> */}
       <Footer/>
     </div>
   );

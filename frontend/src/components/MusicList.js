@@ -7,7 +7,7 @@ const MusicList = () => {
     return (
         <div className='list-container'>
             <h2>My Music</h2>
-            {["My way", "Sigma Boy", "In Motion"].map((music, index) => (
+            {["My way", "Bob", "In Motion"].map((music, index) => (
             <div key={index} className='item'>
                 <div className='circle'></div>
                 <span>{music}</span>
