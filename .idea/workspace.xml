@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3edca916-e7b4-4a2e-94bb-08c32cd6891e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <change beforePath="$PROJECT_DIR$/backend/models/models.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/models.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,12 +29,17 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
+<<<<<<< HEAD
     "git-widget-placeholder": "laptop",
     "last_opened_file_path": "C:/Users/bogda/Desktop/prod_web",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+=======
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/Bogdan/Desktop/Programming/BackEnd/test_connect",
+>>>>>>> b3928a99e5d8eeafdf1beedeea4a96af614d1886
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
@@ -55,8 +60,14 @@
       <option name="presentableId" value="Default" />
       <updated>1729878497494</updated>
       <workItem from="1729878498584" duration="56000" />
+<<<<<<< HEAD
       <workItem from="1730323709889" duration="312000" />
       <workItem from="1731144048290" duration="22000" />
+=======
+      <workItem from="1730574986218" duration="31000" />
+      <workItem from="1730575018738" duration="28000" />
+      <workItem from="1733251299446" duration="23000" />
+>>>>>>> b3928a99e5d8eeafdf1beedeea4a96af614d1886
     </task>
     <servers />
   </component>

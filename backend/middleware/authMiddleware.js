@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-
+// Authorization: Bearer token
 module.exports = function (req, res, next) {
     if (req.method === "OPTIONS") {
         next()

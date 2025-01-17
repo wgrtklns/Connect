@@ -1,0 +1,26 @@
+.add-button{
+    background-color: #32ff7e;
+    border: none;
+    padding: 0.8rem;
+    font-size: 1rem;
+    color: #000;
+    font-weight: bold;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.radio-group{
+    margin: 10px 0;
+}
+
+.upload-box{
+    width: 100px;
+    height: 50px;
+    background-color: #555;
+    margin: 20px auto;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
