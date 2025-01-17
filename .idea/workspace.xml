@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="3edca916-e7b4-4a2e-94bb-08c32cd6891e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,7 +30,11 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "laptop",
-    "last_opened_file_path": "C:/Users/bogda/Desktop/Programming/Projects/Connect",
+    "last_opened_file_path": "C:/Users/bogda/Desktop/prod_web",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
@@ -49,7 +55,8 @@
       <option name="presentableId" value="Default" />
       <updated>1729878497494</updated>
       <workItem from="1729878498584" duration="56000" />
-      <workItem from="1730323709889" duration="232000" />
+      <workItem from="1730323709889" duration="312000" />
+      <workItem from="1731144048290" duration="22000" />
     </task>
     <servers />
   </component>
