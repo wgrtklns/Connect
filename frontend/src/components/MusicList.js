@@ -5,7 +5,7 @@ import { faBan } from '@fortawesome/free-solid-svg-icons';
 import { useAppContext } from '../AppContext';
 
 const MusicList = () => {
-    const {music, setMusic, isLoading} = useAppContext();
+    const {music, deleteMusic, isLoading} = useAppContext();
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -17,7 +17,7 @@ const MusicList = () => {
             <div key={id} className='item'>
                 <div className='circle'>{img}</div>
                 <span style={{marginTop: '15px'}}>{username} <h5 style={{marginTop: '5px', fontWeight: 'lighter'}}>{artist}</h5></span>
-                <span className='delete' onClick={() => console.log('DELETE')}>
+                <span className='delete' onClick={() => deleteMusic(id)}>
                     <FontAwesomeIcon icon={faBan} style={{color: "#ff7a7e"}} />
                 </span>
             </div>

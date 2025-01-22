@@ -6,10 +6,12 @@ import '../styles/Track.css';
 import '../styles/Auth.css';
 import '../styles/List.css'
 import { useAppContext } from '../AppContext';
+import { useNavigate } from 'react-router-dom';
 
 const Track = () => {
-    const {trackdata, isLoading} = useAppContext();
+    const {trackdata, isLoading, addFriends, addMusic} = useAppContext();
     const [isPlay, setPlay] = useState(true);
+    const navigate = useNavigate();
 
     const changePlay = () => {
       if (isPlay) {
@@ -20,19 +22,7 @@ const Track = () => {
         console.log('START')
       }
     }
-
-    const skipTrack = () => {
-      console.log('Skip_track')
-    }
-
-    const addTrack = () => {
-      console.log('Add_track')
-    }
-
-    const addFriend = () => {
-      console.log('Add_friend')
-    }
-
+    
     if (isLoading) {
       return <div>Loading...</div>;
     }
@@ -41,16 +31,20 @@ const Track = () => {
           <div className='profile-info-conatiner'>
             <h2>{trackdata.user.username}</h2>
             <div className='profileCircle'>{trackdata.user.img}</div>
-            <button className='auth-button' style={{width: '266px', height: '50px', marginBottom: '30px'}} onClick={addFriend}>Add to friends</button>
+            <button className='auth-button' style={{width: '266px', height: '50px', marginBottom: '30px'}} 
+            onClick={() => addFriends(trackdata.user)}
+            >Add to friends</button>
             <hr style={{backgroundColor: '#32ff7e', border: 'none', height: '1px', width: '300px', marginBottom: '30px'}}/>
           </div>
           <div className='track-info-container'>
-            <h3>{trackdata.trackname} - {trackdata.artist}</h3>
+            <h3>{trackdata.music.trackname} - {trackdata.music.artist}</h3>
             <div className='track-controls'>
-                <button className='choise-button' onClick={skipTrack}>
+                <button className='choise-button' onClick={() => navigate('/music')}>
                   <FontAwesomeIcon icon={faThumbsDown} size="2x" style={{color: "#ff7a7e",}} />
                 </button>
-                <button className='choise-button' onClick={addTrack}>
+                <button className='choise-button' 
+                onClick={() => addMusic(trackdata.music)}
+                >
                   <FontAwesomeIcon icon={faThumbsUp} size="2x" style={{color: "#32ff7e"}}/>
                 </button>
             </div>

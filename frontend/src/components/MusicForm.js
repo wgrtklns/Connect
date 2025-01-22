@@ -5,6 +5,12 @@ import '../styles/List.css';
 import '../styles/Music.css';
 
 const MusicForm = () => {
+
+
+    const shareData = () => {
+        console.log("SHARE")
+    }
+
     return (
         <div className='list-container'>
             <h2>Add music</h2>
@@ -18,7 +24,7 @@ const MusicForm = () => {
                     <input type="radio" name="uploadType" value="others" /> others
                 </label>
             </div>
-            <button className='add-button'>
+            <button className='add-button' onClick={() => shareData()}>
                 <FontAwesomeIcon size='2x' icon={faFileImport} style={{color: "#1c1c1c",}} />
             </button>
         </div>

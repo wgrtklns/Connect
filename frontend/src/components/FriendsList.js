@@ -5,9 +5,9 @@ import '../styles/List.css';
 import { useAppContext } from '../AppContext';
 
 const FriendsList = () => {
-    const {friends, setFriends, isLoading} = useAppContext();
+    const {friends, deleteFriends, isLoading, fetchFriends} = useAppContext();
 
-    if (isLoading) {
+    if (isLoading) {  
         return <div>Loading...</div>;
     }
     return (
@@ -17,7 +17,7 @@ const FriendsList = () => {
                 <div key={id} className='item'>
                     <div className='circle'>{img}</div>
                     <span>{username}</span>
-                    <span className='delete' >
+                    <span className='delete' onClick={() => deleteFriends(id)}>
                         <FontAwesomeIcon icon={faBan} style={{color: "#ff7a7e",}} />
                     </span>
                 </div>

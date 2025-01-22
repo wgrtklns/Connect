@@ -20,7 +20,7 @@ const Header = () => {
             <button className='header-button' onClick={() => navigate('/friends')}>
                 <FontAwesomeIcon icon={faUserGroup} size='2x' style={{color: "#32e17e",}} />
             </button>
-            <button className='header-button'>
+            <button className='header-button' onClick={() => navigate('/profile')}>
                 <FontAwesomeIcon icon={faUser} size='2x' style={{color: "#32e17e",}} />
             </button>
         </header>
