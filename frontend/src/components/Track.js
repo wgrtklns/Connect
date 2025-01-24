@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
@@ -11,16 +11,16 @@ import { useNavigate } from 'react-router-dom';
 const Track = () => {
     const {trackdata, isLoading, addFriends, addMusic} = useAppContext();
     const [isPlay, setPlay] = useState(true);
+    const audioRef = useRef(null);
     const navigate = useNavigate();
 
     const changePlay = () => {
       if (isPlay) {
-        setPlay(false)
-        console.log('STOP')
+        audioRef.current.pause()
       } else {
-        setPlay(true)
-        console.log('START')
+        audioRef.current.play()
       }
+      setPlay(!isPlay)
     }
     
     if (isLoading) {
@@ -52,6 +52,7 @@ const Track = () => {
                 {isPlay && <FontAwesomeIcon icon={faPlay} style={{color: "#1c1c1c"}}/>}
                 {!isPlay && <FontAwesomeIcon icon={faPause} style={{color: "#1c1c1c"}}/>}
             </button>
+            <audio ref={audioRef} src={trackdata.music.audioUrl}></audio>
           </div>
         </div>
     );

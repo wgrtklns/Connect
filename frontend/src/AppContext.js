@@ -13,14 +13,34 @@ const getEmojiByUsername = (username) => {
 };
 
 export const AppContextProvider = ({children}) => {
-    const [friends, setFriends] = useState([{id: 1, username: 'bob', img: getEmojiByUsername('bob')},
-        {id: 2, username: 'alex', img: getEmojiByUsername('alex')},
-        {id: 3, username: 'max', img: getEmojiByUsername('max')}]);
+    const [friends, setFriends] = useState([]);
     const [music, setMusic] = useState([]);
-    const [profile] = useState({username: 'Meeeno', img: getEmojiByUsername('Meeeno')});
+    const [profile] = useState({id: 1, username: 'AMus', artist: 'Annom', img: getEmojiByUsername('AMus')});
     const [isAuth, setAuth] = useState(false);
     const [isLoading, setLoading] = useState(true);
-    const [trackdata] = useState({music: {id: 1, trackname: 'AMus', artist: 'Annom'},user: {id: 7, username: 'mim', img: getEmojiByUsername('mim')}})
+    const [trackdata, setTrackdata] = useState()
+
+    const fetchTrack = async () => {
+        try {
+            const data = [{
+                music: {
+                    trackname: "Black Privilegge",
+                    artist: "Dr.Dre",
+                    filename: "TEST",
+                    audioUrl: "C:\Users\bogda\Desktop\Dr_Dre_-_Black_Privilege.mp3"
+                }, 
+                user: { 
+                    id: 1, username: 'bob', img: getEmojiByUsername('bob')
+                }
+            }]
+            setTrackdata(data)
+            console.log(trackdata)
+            setLoading(false)
+        } catch {
+            console.log('Error fetchTrack')
+            setLoading(false)
+        }
+    }
 
     const fetchFriends = async () => {
         try {
@@ -53,6 +73,7 @@ export const AppContextProvider = ({children}) => {
     }
 
     useEffect(() => {
+        fetchTrack()
         fetchFriends()
         fetchMusic()
     }, [])
