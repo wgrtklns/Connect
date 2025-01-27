@@ -23,7 +23,7 @@ const Track = () => {
       setPlay(!isPlay)
     }
     
-    if (isLoading) {
+    if (isLoading ||  !trackData) {
       return <div>Loading...</div>;
     }
     return (

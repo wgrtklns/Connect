@@ -19,7 +19,7 @@ export const AppContextProvider = ({children}) => {
     const [profile] = useState({id: 1, username: 'test_user',  img: getEmojiByUsername('test')});
     const [isAuth, setAuth] = useState(false);
     const [isLoading, setLoading] = useState(true);
-    const [trackData, setTrackData] = useState({});
+    const [trackData, setTrackData] = useState({ music: {}, user: {} });
 
     const fetchTrack = async () => {
         try {
@@ -31,14 +31,11 @@ export const AppContextProvider = ({children}) => {
                             trackname: dataJson.data.audioname,
                             artist: dataJson.data.artist,
                             audioUrl: `http://localhost:5012/api/music/musicfile/${check.data.check[0].id}`}, 
-                    user: {id: 2, username: 'test2', img: getEmojiByUsername('test2')}
+                    user: {id: 2, username: 'test2', img: getEmojiByUsername('test22')}
                 }
-                console.log(data)
                 setTrackData(data)
-                console.log(trackData)
                 setLoading(false)
             }
-            setLoading(false)
         } catch {
             console.log('Error fetchTrack')
             setLoading(false)
