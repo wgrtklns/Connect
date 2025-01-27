@@ -13,10 +13,10 @@ const MusicList = () => {
     return (
         <div className='list-container'>
             <h2>Music:</h2>
-            {music.map(({id, username, artist, img}) => (
+            {music.map(({id, trackname, artist, img}) => (
             <div key={id} className='item'>
                 <div className='circle'>{img}</div>
-                <span style={{marginTop: '15px'}}>{username} <h5 style={{marginTop: '5px', fontWeight: 'lighter'}}>{artist}</h5></span>
+                <span style={{marginTop: '15px'}}>{trackname} <h5 style={{marginTop: '5px', fontWeight: 'lighter'}}>{artist}</h5></span>
                 <span className='delete' onClick={() => deleteMusic(id)}>
                     <FontAwesomeIcon icon={faBan} style={{color: "#ff7a7e"}} />
                 </span>

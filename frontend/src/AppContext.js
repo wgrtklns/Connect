@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 const AppContext = createContext()
@@ -15,26 +16,28 @@ const getEmojiByUsername = (username) => {
 export const AppContextProvider = ({children}) => {
     const [friends, setFriends] = useState([]);
     const [music, setMusic] = useState([]);
-    const [profile] = useState({id: 1, username: 'AMus', artist: 'Annom', img: getEmojiByUsername('AMus')});
+    const [profile] = useState({id: 1, username: 'test_user',  img: getEmojiByUsername('test')});
     const [isAuth, setAuth] = useState(false);
     const [isLoading, setLoading] = useState(true);
-    const [trackdata, setTrackdata] = useState()
+    const [trackData, setTrackData] = useState({});
 
     const fetchTrack = async () => {
         try {
-            const data = [{
-                music: {
-                    trackname: "Black Privilegge",
-                    artist: "Dr.Dre",
-                    filename: "TEST",
-                    audioUrl: "C:\Users\bogda\Desktop\Dr_Dre_-_Black_Privilege.mp3"
-                }, 
-                user: { 
-                    id: 1, username: 'bob', img: getEmojiByUsername('bob')
+            const check = await axios.get(`http://localhost:5012/api/music/check_music/${profile.id}`)
+            if (check.data.check[0].id) {
+                const dataJson = await axios.get(`http://localhost:5012/api/music/jsonfile/${check.data.check[0].id}`)
+                const data = {
+                    music: {
+                            trackname: dataJson.data.audioname,
+                            artist: dataJson.data.artist,
+                            audioUrl: `http://localhost:5012/api/music/musicfile/${check.data.check[0].id}`}, 
+                    user: {id: 2, username: 'test2', img: getEmojiByUsername('test2')}
                 }
-            }]
-            setTrackdata(data)
-            console.log(trackdata)
+                console.log(data)
+                setTrackData(data)
+                console.log(trackData)
+                setLoading(false)
+            }
             setLoading(false)
         } catch {
             console.log('Error fetchTrack')
@@ -44,10 +47,12 @@ export const AppContextProvider = ({children}) => {
 
     const fetchFriends = async () => {
         try {
+            // const data = await axios.post('http://localhost:5012/api/friend/get_friends', {
+            //     username: 
+            // })
             const data = [
-                {id: 1, username: 'bob', img: getEmojiByUsername('bob')},
-                {id: 2, username: 'alex', img: getEmojiByUsername('alex')},
-                {id: 3, username: 'max', img: getEmojiByUsername('max')}
+                {id: 5, username: 'test5', img: getEmojiByUsername('test5')},
+                {id: 6, username: 'test6', img: getEmojiByUsername('test6')}
             ]
             setFriends(data)
             setLoading(false)
@@ -60,9 +65,9 @@ export const AppContextProvider = ({children}) => {
     const fetchMusic = async () => {
         try {
             const data = [
-                {id: 1, username: 'AMus', artist: 'Annom', img: getEmojiByUsername('AMus')},
-                {id: 2, username: 'BobMus', artist: 'Annom', img: getEmojiByUsername('BobMus')},
-                {id: 3, username: 'Miramax', artist: 'Annom', img: getEmojiByUsername('Miramax')}
+                {id: 1, trackname: 'Crockodile Rock', artist: 'Elthon John', img: getEmojiByUsername('Crockodile Rock')},
+                {id: 2, trackname: 'Help!', artist: 'The Beatles', img: getEmojiByUsername('Help!')},
+                {id: 3, trackname: 'Bohemian Rapsody', artist: 'Queen', img: getEmojiByUsername('Bohemian Rapsody')}
             ]
             setMusic(data)
             setLoading(false)
@@ -71,6 +76,10 @@ export const AppContextProvider = ({children}) => {
             setLoading(false)
         }
     }
+
+    // const fetchProfile = async () => {
+
+    // }
 
     useEffect(() => {
         fetchTrack()
@@ -132,7 +141,7 @@ export const AppContextProvider = ({children}) => {
                 music,
                 isAuth,
                 isLoading,
-                trackdata,
+                trackData,
                 fetchFriends,
                 fetchMusic,
                 addFriends,

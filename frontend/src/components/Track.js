@@ -9,7 +9,7 @@ import { useAppContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
 
 const Track = () => {
-    const {trackdata, isLoading, addFriends, addMusic} = useAppContext();
+    const {trackData, isLoading, addFriends, addMusic} = useAppContext();
     const [isPlay, setPlay] = useState(true);
     const audioRef = useRef(null);
     const navigate = useNavigate();
@@ -29,30 +29,30 @@ const Track = () => {
     return (
         <div className='list-container'>
           <div className='profile-info-conatiner'>
-            <h2>{trackdata.user.username}</h2>
-            <div className='profileCircle'>{trackdata.user.img}</div>
+            <h2>{trackData.user.username}</h2>
+            <div className='profileCircle'>{trackData.user.img}</div>
             <button className='auth-button' style={{width: '266px', height: '50px', marginBottom: '30px'}} 
-            onClick={() => addFriends(trackdata.user)}
-            >Add to friends</button>
+            onClick={() => addFriends(trackData.user)}>Add to friends</button>
             <hr style={{backgroundColor: '#32ff7e', border: 'none', height: '1px', width: '300px', marginBottom: '30px'}}/>
           </div>
+
           <div className='track-info-container'>
-            <h3>{trackdata.music.trackname} - {trackdata.music.artist}</h3>
+            <h3>{trackData.music.trackname} - {trackData.music.artist}</h3>
             <div className='track-controls'>
                 <button className='choise-button' onClick={() => navigate('/music')}>
                   <FontAwesomeIcon icon={faThumbsDown} size="2x" style={{color: "#ff7a7e",}} />
                 </button>
-                <button className='choise-button' 
-                onClick={() => addMusic(trackdata.music)}
-                >
+                <button className='choise-button' onClick={() => addMusic(trackData.music)}>
                   <FontAwesomeIcon icon={faThumbsUp} size="2x" style={{color: "#32ff7e"}}/>
                 </button>
             </div>
+
             <button className='auth-button' style={{width: '266px', height: '50px'}} onClick={changePlay}>
-                {isPlay && <FontAwesomeIcon icon={faPlay} style={{color: "#1c1c1c"}}/>}
-                {!isPlay && <FontAwesomeIcon icon={faPause} style={{color: "#1c1c1c"}}/>}
+                {isPlay && <FontAwesomeIcon icon={faPause} style={{color: "#1c1c1c"}}/>}
+                {!isPlay && <FontAwesomeIcon icon={faPlay} style={{color: "#1c1c1c"}}/>}
             </button>
-            <audio ref={audioRef} src={trackdata.music.audioUrl}></audio>
+
+            <audio ref={audioRef} src={trackData.music.audioUrl}></audio>
           </div>
         </div>
     );

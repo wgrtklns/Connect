@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/Auth.css';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../AppContext';
+import axios from 'axios';
 
 const SignIn = () => {
     const navigate = useNavigate()
@@ -9,13 +10,15 @@ const SignIn = () => {
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault()
-      console.log(login)
-      console.log(password)
-      if (true) { // Если пользователь умпешно авторизован
+      const result = await axios.post('http://localhost:5012/api/user/login', {
+        username: login,
+        password: password
+      })
+      if (result.data.token) {
         changeAuth(true)
-        localStorage.setItem('token-shmoken', 'token')
+        localStorage.setItem('token', result.data.token)
         navigate('/profile')
       } else {
         console.error('Error SingIn')
@@ -28,7 +31,7 @@ const SignIn = () => {
           <form className="auth-form" onSubmit={handleSubmit}>
             <input
               type="text"
-              placeholder="email or username"
+              placeholder="username"
               className="auth-input"
               value={login}
               onChange={(e) => setLogin(e.target.value)}

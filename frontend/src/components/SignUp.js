@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/Auth.css';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../AppContext';
+import axios from 'axios';
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -10,14 +11,16 @@ const SignUp = () => {
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault()
-      console.log(email)
-      console.log(username)
-      console.log(password)
-      if (true) {
+      const result = await axios.post('http://localhost:5012/api/user/registration', {
+        email: email,
+        username: username,
+        password: password
+      })
+      if (result.data.token) {
         changeAuth(true)
-        localStorage.setItem('token-shmoken', 'token')
+        localStorage.setItem('token', result.data.token)
         navigate('/profile')
       } else {
         console.error('Error SignUp')
