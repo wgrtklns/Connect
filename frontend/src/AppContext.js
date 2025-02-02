@@ -21,7 +21,7 @@ export const AppContextProvider = ({children}) => {
     const [profile] = useState({username: 'Meeeno', img: getEmojiByUsername('Meeeno')});
     const [isAuth, setAuth] = useState(true);
     const [isLoading, setLoading] = useState(true);
-    const [trackdata] = useState({})
+    const [trackdata, setTrackData] = useState([]);
 
     const fetchFriends = async () => {
         try {
@@ -53,18 +53,34 @@ export const AppContextProvider = ({children}) => {
         }
     }
 
+    const fetchTrack = async () => {
+        try {
+            const data = [
+                {artist: 'Kanye West', name: 'I Wonder', audio: 'pass'}
+            ]
+            setFriends(data)
+            setLoading(false)
+        } catch {
+            console.log('Error while fetchTrack')
+            setLoading(false)
+        }
+    }
+
     useEffect(() => {
         fetchFriends()
         fetchMusic()
+        fetchTrack()
     }, [])
 
-    const addFriends = async () => {
-
+    const addFriends = async () =>  {
+            
     }
 
     const addMusic = async () => {
 
     }
+
+    const
 
     return (
         <AppContext.Provider
@@ -75,7 +91,7 @@ export const AppContextProvider = ({children}) => {
                 isAuth,
                 isLoading,
                 fetchFriends,
-                fetchMusic,
+                fetchMusic,  
                 addFriends,
                 addMusic,
             }}

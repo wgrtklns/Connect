@@ -2,6 +2,8 @@ import React from 'react';
 import '../styles/Auth.css';
 
 const SignIn = () => {
+    const {isAuth, }
+
     return (
         <div className="auth-container">
           <h2 className="auth-title">Sign In</h2>
