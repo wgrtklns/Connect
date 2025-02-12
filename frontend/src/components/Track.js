@@ -15,6 +15,7 @@ const Track = () => {
     const navigate = useNavigate();
 
     const changePlay = () => {
+      console.log(trackData)
       if (isPlay) {
         audioRef.current.pause()
       } else {
