@@ -161,7 +161,7 @@ class MusicController {
                 ]
             }})
             if (checkSong) {
-                return res.status(400).json({ message: "Song already in the list" });
+                return res.status(200).json({ message: "Song already in the list" });
             }
             const song = await FavoriteList.create({
                 user_id, original_name, audioname, artist
