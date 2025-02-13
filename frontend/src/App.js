@@ -25,11 +25,12 @@ function App() {
 
 function AppRoutes() {
   const location = useLocation();
-  const shouldShowNavigation = (location.pathname !== '/') && (location.pathname !== '/signin') && (location.pathname !== '/signup');
+  const shouldShowHeader = (location.pathname !== '/') && (location.pathname !== '/signin') && (location.pathname !== '/signup');
+  const shouldShowFooter = (location.pathname !== '/') && (location.pathname !== '/signin') && (location.pathname !== '/signup') && (location.pathname !== '/track') && (location.pathname !== '/connect');
 
   return (
     <div className='App'>
-      {shouldShowNavigation && <Header/>}
+      {shouldShowHeader && <Header/>}
       <Routes>
         <Route path='/' element={<Registration/>} />
         <Route path='/signup' element={<SignUp />} />
@@ -40,7 +41,7 @@ function AppRoutes() {
         <Route path='/connect' element={<MusicForm />} />
         <Route path='/profile' element={<Profile />} />
       </Routes>
-      {shouldShowNavigation && <Footer/>}
+      {shouldShowFooter && <Footer/>}
     </div>
   )
 }
