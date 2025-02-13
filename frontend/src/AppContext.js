@@ -74,6 +74,7 @@ export const AppContextProvider = ({children}) => {
         fetchTrack()
         fetchFriends()
         fetchMusic()
+        fetchTrack()
     }, [])
 
     const addFriends = async (newFriend) => {
@@ -143,6 +144,8 @@ export const AppContextProvider = ({children}) => {
         setAuth(!isAuth)
     }
 
+
+
     return (
         <AppContext.Provider
             value={{ 
@@ -153,7 +156,7 @@ export const AppContextProvider = ({children}) => {
                 isLoading,
                 trackData,
                 fetchFriends,
-                fetchMusic,
+                fetchMusic,  
                 addFriends,
                 addMusic,
                 deleteFriends,
