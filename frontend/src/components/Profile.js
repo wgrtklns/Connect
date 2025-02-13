@@ -11,12 +11,12 @@ const Profile = () => {
             <div className='profileCircle'>{profile.img}</div>
             <h3>{profile.username}</h3>
                 <h2>Music:</h2>
-                {music.map(({id, username, artist, img}) => (
+                {music.map(({id, trackname, artist, img}) => (
                   <div key={id} className='item'>
                       {/* <div className='circle' style={{marginRight: 'auto'}}>{img}</div>
                       <span style={{marginTop: '15px', marginLeft: 'auto'}}>{username} <h5 style={{marginTop: '5px', fontWeight: 'lighter'}} className='abcc'>{artist}</h5></span> */}
                       <div className='circle'>{img}</div>
-                      <span >{username} <h5 style={{marginTop: '5px', fontWeight: 'lighter'}} className='abcc'>{artist}</h5></span>
+                      <span >{trackname} <h5 style={{marginTop: '5px', fontWeight: 'lighter'}} className='abcc'>{artist}</h5></span>
                   </div>
                 ))}
             

@@ -16,7 +16,7 @@ const getEmojiByUsername = (username) => {
 export const AppContextProvider = ({children}) => {
     const [friends, setFriends] = useState([]);
     const [music, setMusic] = useState([]);
-    const [profile] = useState({id: 1, username: 'test_user',  img: getEmojiByUsername('test')});
+    const [profile] = useState({id: 3, username: 'test3',  img: getEmojiByUsername('test')});
     const [isAuth, setAuth] = useState(false);
     const [isLoading, setLoading] = useState(true);
     const [trackData, setTrackData] = useState({ music: {}, user: {} });
@@ -44,14 +44,10 @@ export const AppContextProvider = ({children}) => {
 
     const fetchFriends = async () => {
         try {
-            // const data = await axios.post('http://localhost:5012/api/friend/get_friends', {
-            //     username: 
-            // })
-            const data = [
-                {id: 5, username: 'test5', img: getEmojiByUsername('test5')},
-                {id: 6, username: 'test6', img: getEmojiByUsername('test6')}
-            ]
-            setFriends(data)
+            const data = await axios.post('http://localhost:5012/api/friend/get_friends', {
+                username: profile.username
+            }, {headers: {Authorization:'1 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0M0AxIiwidXNlcm5hbWUiOiJ0ZXN0MyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzM5MzUzNjg0LCJleHAiOjE3Mzk0NDAwODR9.Gai3ICBnnQYlRCJpRDSIGl4iC8acdrN9YwdYTU7o_9w'}})
+            setFriends(data.data.friends)
             setLoading(false)
         } catch {
             console.log('Error while fetchFriends')
@@ -61,12 +57,8 @@ export const AppContextProvider = ({children}) => {
 
     const fetchMusic = async () => {
         try {
-            const data = [
-                {id: 1, trackname: 'Crockodile Rock', artist: 'Elthon John', img: getEmojiByUsername('Crockodile Rock')},
-                {id: 2, trackname: 'Help!', artist: 'The Beatles', img: getEmojiByUsername('Help!')},
-                {id: 3, trackname: 'Bohemian Rapsody', artist: 'Queen', img: getEmojiByUsername('Bohemian Rapsody')}
-            ]
-            setMusic(data)
+            const data  = await axios.post(`http://localhost:5012/api/music/favorites/${profile.username}`)
+            setMusic(data.data.favorites)
             setLoading(false)
         } catch {
             console.log('Error while fetchFriends')
@@ -102,9 +94,21 @@ export const AppContextProvider = ({children}) => {
     }
 
     const addMusic = async (newMusic) => {
+        const info = {
+            user_id: profile.id,
+            original_name: trackData.music.audioUrl,
+            audioname: trackData.music.trackname,
+            artist: trackData.music.artist
+        }
+        console.log('....', info)
         try {
             setMusic((prevMusic) => [...prevMusic, newMusic]);
-            console.log('Music added:', newMusic);
+            const data = await axios.post('http://localhost:5012/api/music/add_favorites', info , {headers: {Authorization:'1 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0M0AxIiwidXNlcm5hbWUiOiJ0ZXN0MyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzM5MzUzNjg0LCJleHAiOjE3Mzk0NDAwODR9.Gai3ICBnnQYlRCJpRDSIGl4iC8acdrN9YwdYTU7o_9w'}})
+            if (data.data.message === 'Song already in the list') {
+                console.log('Song already in list')
+            } else {
+                // console.log('Music added:', data.data.message);
+            }
         } catch (error) {
             console.log('Error adding music:', error);
         }
@@ -126,6 +130,15 @@ export const AppContextProvider = ({children}) => {
             localStorage.setItem(response, 'token')
         }
     }
+
+    // const uploadMusic = async() => {
+    //     try {
+    //         const uploadM = axios.post('http://localhost:5012/api/music/upload_m', {})
+    //     } catch (error) {
+    //         console.log('Error upload music')
+    //     }
+    // }
+
 
     const changeAuth = async () => {
         setAuth(!isAuth)
