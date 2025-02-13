@@ -11,7 +11,7 @@ const getEmojiByUsername = (username) => {
     const emojiCodePoint = baseCodePoint + (charSum % range);
     
     return String.fromCodePoint(emojiCodePoint);
-};
+};   
 
 export const AppContextProvider = ({children}) => {
     const [friends, setFriends] = useState([]);
