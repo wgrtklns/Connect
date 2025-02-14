@@ -1,5 +1,5 @@
-import React from 'react';
-import { Route, Routes, BrowserRouter as Router, useLocation} from 'react-router-dom'
+import React, { useContext } from 'react';
+import { Route, Routes, BrowserRouter as Router, useLocation, useNavigate} from 'react-router-dom'
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -11,7 +11,7 @@ import SignIn from './components/SignIn';
 import Track from './components/Track';
 import MusicForm from './components/MusicForm';
 import SignUp from './components/SignUp';
-import { AppContextProvider } from './AppContext';
+import { AppContextProvider, useAppContext } from './AppContext';
 
 function App() {
   return (
@@ -24,10 +24,15 @@ function App() {
 }
 
 function AppRoutes() {
+  const {isAuth} = useAppContext()
   const location = useLocation();
+  const navigate = useNavigate()
   const shouldShowHeader = (location.pathname !== '/') && (location.pathname !== '/signin') && (location.pathname !== '/signup');
   const shouldShowFooter = (location.pathname !== '/') && (location.pathname !== '/signin') && (location.pathname !== '/signup') && (location.pathname !== '/track') && (location.pathname !== '/connect');
 
+  if (!isAuth) {
+    navigate('/')
+  }
   return (
     <div className='App'>
       {shouldShowHeader && <Header/>}

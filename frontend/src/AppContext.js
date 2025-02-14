@@ -16,7 +16,7 @@ const getEmojiByUsername = (username) => {
 export const AppContextProvider = ({children}) => {
     const [friends, setFriends] = useState([]);
     const [music, setMusic] = useState([]);
-    const [profile] = useState({id: 3, username: 'test3',  img: getEmojiByUsername('test')});
+    const [profile] = useState({id: null, username: '',  img: ''});
     const [isAuth, setAuth] = useState(false);
     const [isLoading, setLoading] = useState(true);
     const [trackData, setTrackData] = useState({ music: {}, user: {} });
@@ -46,7 +46,7 @@ export const AppContextProvider = ({children}) => {
         try {
             const data = await axios.post('http://localhost:5012/api/friend/get_friends', {
                 username: profile.username
-            }, {headers: {Authorization:'1 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0M0AxIiwidXNlcm5hbWUiOiJ0ZXN0MyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzM5MzUzNjg0LCJleHAiOjE3Mzk0NDAwODR9.Gai3ICBnnQYlRCJpRDSIGl4iC8acdrN9YwdYTU7o_9w'}})
+            }, {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
             setFriends(data.data.friends)
             setLoading(false)
         } catch {
