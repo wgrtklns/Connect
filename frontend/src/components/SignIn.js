@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const SignIn = () => {
     const navigate = useNavigate()
-    const {changeAuth} = useAppContext();
+    const {changeAuth, fetchProfile} = useAppContext();
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
 
@@ -18,6 +18,7 @@ const SignIn = () => {
       })
       if (result.data.token) {
         changeAuth(true)
+        fetchProfile(login)
         localStorage.setItem('token', result.data.token)
         navigate('/profile')
       } else {

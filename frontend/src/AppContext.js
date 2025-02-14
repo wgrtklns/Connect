@@ -16,7 +16,7 @@ const getEmojiByUsername = (username) => {
 export const AppContextProvider = ({children}) => {
     const [friends, setFriends] = useState([]);
     const [music, setMusic] = useState([]);
-    const [profile] = useState({id: null, username: '',  img: ''});
+    const [profile, setProfile] = useState({id: null, username: '',  img: ''});
     const [isAuth, setAuth] = useState(false);
     const [isLoading, setLoading] = useState(true);
     const [trackData, setTrackData] = useState({ music: {}, user: {} });
@@ -57,29 +57,36 @@ export const AppContextProvider = ({children}) => {
 
     const fetchMusic = async () => {
         try {
-            const data  = await axios.post(`http://localhost:5012/api/music/favorites/${profile.username}`)
-            setMusic(data.data.favorites)
+            console.log('FETCH MUSIC')
+            const data = await axios.get(`http://localhost:5012/api/music/favorites/${profile.username}`, 
+                {headers: {Authorization: 'Bearer '+localStorage.getItem('token')}})
+            console.log(data.data)
             setLoading(false)
         } catch {
-            console.log('Error while fetchFriends')
+            console.log('Error while fetchMusic') 
             setLoading(false)
         }
     }
 
-    // const fetchProfile = async () => {
-
-    // }
-
-    useEffect(() => {
-        fetchTrack()
-        fetchFriends()
-        fetchMusic()
-        fetchTrack()
-    }, [])
+    const fetchProfile = async (username) => {
+        try {
+            const data = await axios.get(`http://localhost:5012/api/user/userinfo/${username}`, 
+            {headers: {Authorization: 'Bearer '+localStorage.getItem('token')}})
+            const profileImg =  getEmojiByUsername(username)
+            setProfile({id: data.data.user_info.id, username: data.data.user_info.username,  img: profileImg})
+            fetchMusic()
+            // fetchFriends()
+            setLoading(false)
+        } catch {
+            console.log('Error fetch profile')
+            setLoading(false)
+        }
+    }
 
     const addFriends = async (newFriend) => {
         try {
             setFriends((prevFriends) => [...prevFriends, newFriend])
+
         } catch (e) {
             console.log('Error adding friend!', e)
         }
@@ -144,7 +151,18 @@ export const AppContextProvider = ({children}) => {
         setAuth(!isAuth)
     }
 
-
+    useEffect(() => {
+        const fetchData = async () => {
+            if (isAuth) {
+                await fetchTrack();
+                await fetchFriends();
+                await fetchMusic();
+            }
+        };
+    
+        fetchData();
+    }, []);
+    
 
     return (
         <AppContext.Provider
@@ -155,8 +173,10 @@ export const AppContextProvider = ({children}) => {
                 isAuth,
                 isLoading,
                 trackData,
+                fetchProfile,
                 fetchFriends,
-                fetchMusic,  
+                fetchMusic, 
+                fetchTrack, 
                 addFriends,
                 addMusic,
                 deleteFriends,

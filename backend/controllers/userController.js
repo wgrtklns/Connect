@@ -94,7 +94,7 @@ class UserController {
 
     async getUser(req, res) {
         try {
-            if (req.user.role !== 'ADMIN') {
+            if (req.user.role == 'ADMIN') {
                 return res.status(403).json({ message: 'Access denied. Admins only.' })
             }
             const {username} = req.params

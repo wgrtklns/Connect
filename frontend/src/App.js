@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Route, Routes, BrowserRouter as Router, useLocation, useNavigate} from 'react-router-dom'
 
 import Header from './components/Header';
@@ -29,10 +29,12 @@ function AppRoutes() {
   const navigate = useNavigate()
   const shouldShowHeader = (location.pathname !== '/') && (location.pathname !== '/signin') && (location.pathname !== '/signup');
   const shouldShowFooter = (location.pathname !== '/') && (location.pathname !== '/signin') && (location.pathname !== '/signup') && (location.pathname !== '/track') && (location.pathname !== '/connect');
-
-  if (!isAuth) {
-    navigate('/')
-  }
+  useEffect(() => {
+    if (!isAuth) {
+      navigate('/')
+    }
+  }, [])
+  
   return (
     <div className='App'>
       {shouldShowHeader && <Header/>}
