@@ -14,12 +14,26 @@ const getEmojiByUsername = (username) => {
 };   
 
 export const AppContextProvider = ({children}) => {
-    const [friends, setFriends] = useState([]);
-    const [music, setMusic] = useState([]);
-    const [profile, setProfile] = useState({id: null, username: '',  img: ''});
-    const [isAuth, setAuth] = useState(false);
+    const [friends, setFriends] = useState(
+        [{id: 1, username: 'Alex', img: getEmojiByUsername('Evan')},
+        {id: 2, username: 'Pavel', img: getEmojiByUsername('Pavel')},
+        {id: 3, username: 'Mark', img: getEmojiByUsername('Durov')}]
+    );
+    const [music, setMusic] = useState(
+        [{id: 1, trackname: 'Yellow Submarine', artist: 'The Beatles', img: getEmojiByUsername('AMus')},
+        {id: 2, trackname: 'Bohemian Rhapsody', artist: 'Queen', img: getEmojiByUsername('BobMus')},
+        {id: 3, trackname: 'Get Lucky', artist: 'Daft Punk', img: getEmojiByUsername('Miramax')},
+        {id: 4, trackname: 'I`m Still Standing', artist: 'Elton John', img: getEmojiByUsername('Elton')},]
+    );
+    const [profile, setProfile] = useState(
+        {id: 9, username: 'Bob', img: getEmojiByUsername('bob')}
+    );
+    const [isAuth, setAuth] = useState(true);
     const [isLoading, setLoading] = useState(true);
-    const [trackData, setTrackData] = useState({ music: {}, user: {} });
+    const [trackData, setTrackData] = useState(
+        {music: {id: 1, trackname: 'Come Together', artist: 'The Beatles'},
+        user: {id: 2, username: 'Pavel', img: getEmojiByUsername('Pavel')}}
+    );
 
     const fetchTrack = async () => {
         try {
