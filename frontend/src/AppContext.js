@@ -14,25 +14,14 @@ const getEmojiByUsername = (username) => {
 };   
 
 export const AppContextProvider = ({children}) => {
-    const [friends, setFriends] = useState(
-        [{id: 1, username: 'Alex', img: getEmojiByUsername('Evan')},
-        {id: 2, username: 'Pavel', img: getEmojiByUsername('Pavel')},
-        {id: 3, username: 'Mark', img: getEmojiByUsername('Durov')}]
-    );
-    const [music, setMusic] = useState(
-        [{id: 1, trackname: 'Yellow Submarine', artist: 'The Beatles', img: getEmojiByUsername('AMus')},
-        {id: 2, trackname: 'Bohemian Rhapsody', artist: 'Queen', img: getEmojiByUsername('BobMus')},
-        {id: 3, trackname: 'Get Lucky', artist: 'Daft Punk', img: getEmojiByUsername('Miramax')},
-        {id: 4, trackname: 'I`m Still Standing', artist: 'Elton John', img: getEmojiByUsername('Elton')},]
-    );
-    const [profile, setProfile] = useState(
-        {id: 9, username: 'Bob', img: getEmojiByUsername('bob')}
-    );
-    const [isAuth, setAuth] = useState(true);
+    const [friends, setFriends] = useState([]);
+    const [music, setMusic] = useState([]);
+    const [profile, setProfile] = useState({id: 0, username: 'Null'});
+    const [isAuth, setAuth] = useState(false);
     const [isLoading, setLoading] = useState(true);
     const [trackData, setTrackData] = useState(
-        {music: {id: 1, trackname: 'Come Together', artist: 'The Beatles'},
-        user: {id: 2, username: 'Pavel', img: getEmojiByUsername('Pavel')}}
+        {music: {id: 0, trackname: 'Trackname', artist: 'Artist'}, 
+        user: {id: 0, username: undefined}}
     );
 
     const fetchTrack = async () => {
@@ -58,9 +47,11 @@ export const AppContextProvider = ({children}) => {
 
     const fetchFriends = async () => {
         try {
-            const data = await axios.post('http://localhost:5012/api/friend/get_friends', {
-                username: profile.username
-            }, {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
+            const data = await axios.post(
+            'http://localhost:5012/api/friend/get_friends', 
+            {username: profile.username},
+            {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}}
+            )
             setFriends(data.data.friends)
             setLoading(false)
         } catch {
@@ -71,10 +62,11 @@ export const AppContextProvider = ({children}) => {
 
     const fetchMusic = async () => {
         try {
-            console.log('FETCH MUSIC')
-            const data = await axios.get(`http://localhost:5012/api/music/favorites/${profile.username}`, 
-                {headers: {Authorization: 'Bearer '+localStorage.getItem('token')}})
-            console.log(data.data)
+            const data = await axios.get(
+            `http://localhost:5012/api/music/favorites/${'test1'}`, 
+            {headers: {Authorization: 'Bearer '+localStorage.getItem('token')}}
+            )
+            setMusic(data.data.favList)
             setLoading(false)
         } catch {
             console.log('Error while fetchMusic') 
@@ -84,12 +76,13 @@ export const AppContextProvider = ({children}) => {
 
     const fetchProfile = async (username) => {
         try {
-            const data = await axios.get(`http://localhost:5012/api/user/userinfo/${username}`, 
-            {headers: {Authorization: 'Bearer '+localStorage.getItem('token')}})
+            const data = await axios.get(
+            `http://localhost:5012/api/user/userinfo/${username}`, 
+            {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}
+            )
             const profileImg =  getEmojiByUsername(username)
             setProfile({id: data.data.user_info.id, username: data.data.user_info.username,  img: profileImg})
             fetchMusic()
-            // fetchFriends()
             setLoading(false)
         } catch {
             console.log('Error fetch profile')
@@ -99,8 +92,12 @@ export const AppContextProvider = ({children}) => {
 
     const addFriends = async (newFriend) => {
         try {
+            const data = await axios.post(
+            `http://localhost:5012/api/friend/add_friend`,
+            {mainId: 5, secondId: 6}, 
+            {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}
+            )
             setFriends((prevFriends) => [...prevFriends, newFriend])
-
         } catch (e) {
             console.log('Error adding friend!', e)
         }
@@ -108,6 +105,11 @@ export const AppContextProvider = ({children}) => {
 
     const deleteFriends = async(friendId) => {
         try {
+            const data = await axios.delete(
+            `http://localhost:5012/api/friend/delete_friend`,
+            {data: {mainId: 5, secondId: 6}, 
+            headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}
+            )
             setFriends((prevFriends) => prevFriends.filter((friend) => friend.id !== friendId));
         } catch (e) {
             console.log('Error deleting friend!', e)

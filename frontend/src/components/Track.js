@@ -26,6 +26,12 @@ const Track = () => {
     
     if (isLoading ||  !trackData) {
       return <div>Loading...</div>;
+    } else if (trackData.user.username === undefined) {
+      return (
+        <div className='list-container'>
+          <h2>Nobody sent you the track</h2>
+        </div>
+      )
     }
     return (
         <div className='list-container'>
