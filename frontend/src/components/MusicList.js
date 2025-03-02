@@ -14,18 +14,19 @@ const MusicList = () => {
     if (isLoading) {
         return <div>Loading...</div>;
     }
+
     return (
         <div className='list-container'>
             <h2>Music:</h2>
             {music.length < 1 && <h3>Music list empty...</h3>}
-            {music.map(({id, trackname, artist, img}, index) => (
+            {music.map(({id, audioname, artist, img}, index) => (
                 <div key={index} className='item'>
                     <div className='circle'>{img}</div>
                     <span style={{marginTop: '15px'}}>
-                        {trackname} 
+                        {audioname} 
                         <h5 style={{marginTop: '5px', fontWeight: 'lighter'}}>{artist}</h5>
                     </span>
-                    <span className='delete' onClick={() => deleteMusic(id)}>
+                    <span className='delete' onClick={() => deleteMusic(audioname, id)}>
                         <FontAwesomeIcon icon={faBan} style={{color: "#ff7a7e"}} />
                     </span>
                 </div>

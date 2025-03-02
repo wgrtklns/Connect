@@ -20,8 +20,8 @@ export const AppContextProvider = ({children}) => {
     const [isAuth, setAuth] = useState(false);
     const [isLoading, setLoading] = useState(true);
     const [trackData, setTrackData] = useState(
-        {music: {id: 0, trackname: 'Trackname', artist: 'Artist'}, 
-        user: {id: 0, username: undefined}}
+        {music: {id: null, trackname: 'Trackname', artist: 'Artist'}, 
+        user: {id: null, username: undefined}}
     );
 
     const fetchTrack = async () => {
@@ -45,14 +45,26 @@ export const AppContextProvider = ({children}) => {
         }
     }
 
-    const fetchFriends = async () => {
+    const fetchFriends = async () => { // TODO: fix this shit
         try {
             const data = await axios.post(
             'http://localhost:5012/api/friend/get_friends', 
             {username: profile.username},
             {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}}
             )
-            setFriends(data.data.friends)
+            let ids = data.data.friends.map(friend => friend.id);
+            let friendsList = []
+            for (let id of ids) {
+                const result = await axios.get(`http://localhost:5012/api/friend/get_friend/${id}`, {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
+                const u1 = result.data.user1
+                const u2 = result.data.user2
+                if (u1.username === profile.username) {
+                    friendsList.push({id: u2.id, username: u2.username})
+                } else {
+                    friendsList.push({id: u1.id, username: u1.username})
+                }
+            }
+            setFriends(friendsList)
             setLoading(false)
         } catch {
             console.log('Error while fetchFriends')
@@ -94,7 +106,7 @@ export const AppContextProvider = ({children}) => {
         try {
             const data = await axios.post(
             `http://localhost:5012/api/friend/add_friend`,
-            {mainId: 5, secondId: 6}, 
+            {mainId: profile.id, secondId: newFriend.id}, 
             {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}
             )
             setFriends((prevFriends) => [...prevFriends, newFriend])
@@ -103,11 +115,11 @@ export const AppContextProvider = ({children}) => {
         }
     }
 
-    const deleteFriends = async(friendId) => {
+    const deleteFriends = async (friendId) => {
         try {
             const data = await axios.delete(
             `http://localhost:5012/api/friend/delete_friend`,
-            {data: {mainId: 5, secondId: 6}, 
+            {data: {mainId: profile.id, secondId: friendId},  // 5 => 6
             headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}
             )
             setFriends((prevFriends) => prevFriends.filter((friend) => friend.id !== friendId));
@@ -117,30 +129,31 @@ export const AppContextProvider = ({children}) => {
     }
 
     const addMusic = async (newMusic) => {
-        const info = {
-            user_id: profile.id,
-            original_name: trackData.music.audioUrl,
-            audioname: trackData.music.trackname,
-            artist: trackData.music.artist
-        }
-        console.log('....', info)
         try {
-            setMusic((prevMusic) => [...prevMusic, newMusic]);
-            const data = await axios.post('http://localhost:5012/api/music/add_favorites', info , {headers: {Authorization:'1 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJ0ZXN0M0AxIiwidXNlcm5hbWUiOiJ0ZXN0MyIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzM5MzUzNjg0LCJleHAiOjE3Mzk0NDAwODR9.Gai3ICBnnQYlRCJpRDSIGl4iC8acdrN9YwdYTU7o_9w'}})
+            const data = await axios.post(
+                'http://localhost:5012/api/music/add_favorites',
+                {user_id: profile.id, original_name: trackData.music.audioUrl, audioname: trackData.music.trackname, artist: trackData.music.artist}, 
+                {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}})
             if (data.data.message === 'Song already in the list') {
                 console.log('Song already in list')
             } else {
-                // console.log('Music added:', data.data.message);
+                console.log('Music added:', data.data.song.audioname);
             }
+            setMusic((prevMusic) => [...prevMusic, newMusic]);
         } catch (error) {
             console.log('Error adding music:', error);
         }
     };
 
-    const deleteMusic = async (musicId) => {
+    const deleteMusic = async (trackname, musicId) => {
+        await console.log({user_id: profile.id, audioname: trackData.music.trackname})
         try {
+            const data = await axios.delete(
+            `http://localhost:5012/api/music/delete_fav`,
+            {data: {user_id: profile.id, audioname: trackData.music.trackname},
+            headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}
+            )
             setMusic((prevMusic) => prevMusic.filter((music) => music.id !== musicId));
-            console.log('Music deleted:', musicId);
         } catch (error) {
             console.log('Error deleting music:', error);
         }
@@ -148,26 +161,40 @@ export const AppContextProvider = ({children}) => {
 
     const authUser = async () => {
         localStorage.getItem('token')
-        const response = 'data'
-        if (response) {
-            localStorage.setItem(response, 'token')
+        try {
+            const response = await axios.get(
+                'http://localhost:5012/api/user/authorization',
+                {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}
+            )
+            if (response) {
+                await localStorage.setItem(response, 'token')
+            }
+        } catch (error) {
+            console.log('Error auth user:', error);
         }
     }
 
-    // const uploadMusic = async() => {
-    //     try {
-    //         const uploadM = axios.post('http://localhost:5012/api/music/upload_m', {})
-    //     } catch (error) {
-    //         console.log('Error upload music')
-    //     }
-    // }
+    const uploadMusic = async (formData) => { // TODO: Fix server
+        try {
+            const data = axios.post(
+                'http://localhost:5012/api/music/upload_m',
+                formData, 
+                {headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                    'Content-Type': 'multipart/form-data'
+                }})
+            console.log(data.data)
+        } catch (error) {
+            console.log('Error upload music')
+        }
+    }
 
 
     const changeAuth = async () => {
         setAuth(!isAuth)
     }
 
-    useEffect(() => {
+    useEffect(() => { // <= Эта херня вообще тут нужна?
         const fetchData = async () => {
             if (isAuth) {
                 await fetchTrack();
@@ -198,7 +225,8 @@ export const AppContextProvider = ({children}) => {
                 deleteFriends,
                 deleteMusic,
                 changeAuth,
-                authUser
+                authUser,
+                uploadMusic
             }}
         >
             {children}

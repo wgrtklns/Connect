@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
@@ -9,13 +9,16 @@ import { useAppContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
 
 const Track = () => {
-    const {trackData, isLoading, addFriends, addMusic} = useAppContext();
+    const {trackData, isLoading, addFriends, addMusic, fetchTrack, authUser} = useAppContext();
     const [isPlay, setPlay] = useState(true);
     const audioRef = useRef(null);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        fetchTrack()
+    }, [])
+
     const changePlay = () => {
-      console.log(trackData)
       if (isPlay) {
         audioRef.current.pause()
       } else {
@@ -39,7 +42,7 @@ const Track = () => {
             <h2>{trackData.user.username}</h2>
             <div className='profileCircle'>{trackData.user.img}</div>
             <button className='auth-button' style={{width: '266px', height: '50px', marginBottom: '30px'}} 
-            onClick={() => addFriends(trackData.user)}>Add to friends</button>
+            onClick={() => addFriends(trackData.user.id)}>Add to friends</button>
             <hr style={{backgroundColor: '#32ff7e', border: 'none', height: '1px', width: '300px', marginBottom: '30px'}}/>
           </div>
 

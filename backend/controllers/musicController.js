@@ -30,19 +30,22 @@ class MusicController {
                     return res.status(500).json({ message: "Error while uploading file" })
                 }
                 const { originalname, filename, path, size } = req.file
-                let { audioname, artist, recipient_id } = req.body // TODO: Add random id OR friends id
+                let { audioname, artist, recipient_type } = req.body // TODO: Add random id OR friends id
                 // TODO check if id != rec_id
-                if (!recipient_id) {
+                if (recipient_type == 'friends') {
                     const randomUsers = await User.findAll({
                         order: Sequelize.fn('RANDOM'),  // Для PostgreSQL
                         limit: 5  // Устанавливаем ограничение на количество пользователей
                     });
-                
-                    if (randomUsers.length > 0) {
-                        // Выбираем случайного пользователя из списка
-                        const randomUser = randomUsers[Math.floor(Math.random() * randomUsers.length)];
-                        recipient_id = randomUser.id;
-                }}
+                } else {
+                    // TODO
+                }
+
+                if (randomUsers.length > 0) {
+                    // Выбираем случайного пользователя из списка
+                    const randomUser = randomUsers[Math.floor(Math.random() * randomUsers.length)];
+                    recipient_id = randomUser.id;
+                }
 
                 const date = new Date()
 
