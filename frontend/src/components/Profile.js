@@ -1,9 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import '../styles/List.css';
 import { useAppContext } from '../AppContext';
 
 const Profile = () => {
-    const {profile, music, addFriends} = useAppContext();
+    const {profile, music, addFriends, fetchProfile, authUser, isAuth} = useAppContext();
+    
+    useEffect(() => {
+        fetchProfile(profile.username)
+    }, [])
 
     return (
         <div className='list-container'>

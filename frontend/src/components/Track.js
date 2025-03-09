@@ -15,6 +15,7 @@ const Track = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        authUser()
         fetchTrack()
     }, [])
 

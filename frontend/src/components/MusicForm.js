@@ -7,7 +7,7 @@ import { useAppContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
 
 const MusicForm = () => {
-    const {uploadMusic} = useAppContext();
+    const {uploadMusic, profile} = useAppContext();
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedReceiver, setSelectedReceiver] = useState('');
     const [name, setName] = useState('');
@@ -41,8 +41,7 @@ const MusicForm = () => {
         formData.append("recipient_type", selectedReceiver);
         formData.append("audioname", name);
         formData.append("artist", artist);
-
-        console.log('Form data:', formData)
+        formData.append("mainId", profile.id)
         
         await uploadMusic(formData);
     };

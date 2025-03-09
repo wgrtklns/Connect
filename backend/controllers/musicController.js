@@ -2,7 +2,7 @@ const {MusicFile, FavoriteList, User} = require('../models/models')
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
-const { Sequelize } = require('../db')
+const { Sequelize, random } = require('../db')
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -30,23 +30,36 @@ class MusicController {
                     return res.status(500).json({ message: "Error while uploading file" })
                 }
                 const { originalname, filename, path, size } = req.file
-                let { audioname, artist, recipient_type } = req.body // TODO: Add random id OR friends id
-                // TODO check if id != rec_id
-                if (recipient_type == 'friends') {
-                    const randomUsers = await User.findAll({
-                        order: Sequelize.fn('RANDOM'),  // Для PostgreSQL
-                        limit: 5  // Устанавливаем ограничение на количество пользователей
-                    });
-                } else {
-                    // TODO
+                let { audioname, artist, recipientType, mainId } = req.body
+
+                
+                // if (recipientType == 'friends') {
+                //     const randomUsers = await User.findAll({
+                //         order: Sequelize.fn('RANDOM'),
+                //         limit: 5
+                //     });
+                // } else {
+                //     const randomUsers = await User.findAll({
+                //         order: Sequelize.fn('RANDOM'),
+                //         limit: 5
+                //     });
+                // }
+                
+                const randomUsers = await User.findAll({
+                    order: Sequelize.fn('RANDOM'),
+                    limit: 5
+                });
+                
+                let recipient_id = null;
+
+                const filteredUsers = randomUsers.filter(user => user.dataValues.id !== mainId);
+                
+                if (filteredUsers.length > 0) {
+                    const randomUser = filteredUsers[Math.floor(Math.random() * filteredUsers.length)];
+                    recipient_id = randomUser.dataValues.id;
                 }
 
-                if (randomUsers.length > 0) {
-                    // Выбираем случайного пользователя из списка
-                    const randomUser = randomUsers[Math.floor(Math.random() * randomUsers.length)];
-                    recipient_id = randomUser.id;
-                }
-
+                
                 const date = new Date()
 
                 const created_file = await MusicFile.create({
