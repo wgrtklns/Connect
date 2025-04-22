@@ -30,9 +30,7 @@ export const AppContextProvider = ({children}) => {
 
     const fetchTrack = async () => { // Трэк
         try {
-            console.log("TRACK")
             const check = await axios.get(`http://localhost:5012/api/music/check_music/${profile.id}`)
-            console.log(check.data.check[0].id)
             if (check.data.check[0].id) {
                 const dataJson = await axios.get(`http://localhost:5012/api/music/jsonfile/${check.data.check[0].id}`)
                 const data = {
@@ -43,7 +41,7 @@ export const AppContextProvider = ({children}) => {
                     user: {id: dataJson.data.user_id, username: dataJson.data.username, img: getEmojiByUsername(dataJson.data.username)}
                 }
                 setTrackData(data)
-                setLoading(false)}
+                setLoading(false)}            
         } catch {
             console.log('Error fetchTrack')
             setLoading(false)
@@ -116,6 +114,7 @@ export const AppContextProvider = ({children}) => {
 
     const addFriends = async (newFriend) => { // Добавление друзей - работает
         try {
+            console.log(newFriend)
             const data = await axios.post(
                 `http://localhost:5012/api/friend/add_friend`,
                 {mainId: profile.id, secondId: newFriend.id}, 
@@ -163,6 +162,7 @@ export const AppContextProvider = ({children}) => {
 
     const deleteMusic = async (musicId) => { // Удаление музыки - работает
         try {
+            console.log({user_id: profile.id, audioname: trackData.music.trackname})
             const data = await axios.delete(
             `http://localhost:5012/api/music/delete_fav`,
             {data: {user_id: profile.id, audioname: trackData.music.trackname},
@@ -213,7 +213,6 @@ export const AppContextProvider = ({children}) => {
             console.log('Error upload music')
         }
     }
-
 
     const changeAuth = async () => {
         setAuth(!isAuth)

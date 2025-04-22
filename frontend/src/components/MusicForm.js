@@ -41,8 +41,11 @@ const MusicForm = () => {
         formData.append("recipient_type", selectedReceiver);
         formData.append("audioname", name);
         formData.append("artist", artist);
-        formData.append("mainId", profile.id)
-        
+        formData.append("user_id", profile.id)
+        formData.append("username", profile.username)
+        // console.log(formData.entries().forEach(element => {
+        //     console.log(element)
+        // }))
         await uploadMusic(formData);
     };
     

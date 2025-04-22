@@ -1,4 +1,4 @@
-const {MusicFile, FavoriteList, User} = require('../models/models')
+const {MusicFile, FavoriteList, User, Friends} = require('../models/models')
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
@@ -30,40 +30,87 @@ class MusicController {
                     return res.status(500).json({ message: "Error while uploading file" })
                 }
                 const { originalname, filename, path, size } = req.file
-                let { audioname, artist, recipientType, mainId } = req.body
+                let { audioname, artist, recipient_type, mainId, user_id, username } = req.body;
 
-                
-                // if (recipientType == 'friends') {
-                //     const randomUsers = await User.findAll({
-                //         order: Sequelize.fn('RANDOM'),
-                //         limit: 5
+                // let recipient_id = null;
+
+                // if (recipient_type === 'friends') {
+                //     // Получаем список друзей
+                //     const friends = await Friends.findAll({
+                //         where: {
+                //             [Sequelize.Op.or]: [
+                //                 { user1_id: user_id },
+                //                 { user2_id: user_id }
+                //             ],
+                //             status: 'accepted' // Если у вас есть статус дружбы
+                //         }
                 //     });
+
+                //     const friendIds = friends.map(friend => 
+                //         friend.user1_id === user_id ? friend.user2_id : friend.user1_id
+                //     );
+
+                //     if (friendIds.length > 0) {
+                //         // Выбираем случайного друга
+                //         recipient_id = friendIds[Math.floor(Math.random() * friendIds.length)];
+                //     }
                 // } else {
-                //     const randomUsers = await User.findAll({
+                //     const allUsers = await User.findAll({
+                //         where: {
+                //             id: {
+                //                 [Sequelize.Op.not]: user_id, // Исключаем себя
+                //                 [Sequelize.Op.notIn]: friendIds // Исключаем друзей, если массив существует
+                //             }
+                //         },
                 //         order: Sequelize.fn('RANDOM'),
                 //         limit: 5
                 //     });
+
+                //     if (allUsers.length > 0) {
+                //         recipient_id = allUsers[Math.floor(Math.random() * allUsers.length)].id;
+                //     }
                 // }
-                
+
+                // if (!recipient_id) {
+                //     // Если не нашли подходящего получателя
+                //     return res.status(400).json({ error: 'No suitable recipient found' });
+                // }
+
+                 // if (recipientType == 'friends') {
+                 //     const randomUsers = await User.findAll({
+                 //         order: Sequelize.fn('RANDOM'),
+                 //         limit: 5
+                 //     });
+                 // } else {
+                 //     const randomUsers = await User.findAll({
+                 //         order: Sequelize.fn('RANDOM'),
+                 //         limit: 5
+                 //     });
+                 // }
+ 
                 const randomUsers = await User.findAll({
+                    where: {
+                        id: {
+                            [Sequelize.Op.not]: user_id
+                        }
+                    },
                     order: Sequelize.fn('RANDOM'),
                     limit: 5
                 });
-                
+
                 let recipient_id = null;
 
                 const filteredUsers = randomUsers.filter(user => user.dataValues.id !== mainId);
-                
+
                 if (filteredUsers.length > 0) {
                     const randomUser = filteredUsers[Math.floor(Math.random() * filteredUsers.length)];
                     recipient_id = randomUser.dataValues.id;
                 }
-
                 
                 const date = new Date()
 
                 const created_file = await MusicFile.create({
-                    original_name: originalname, filename, audioname, artist, date, size, path, recipient_id
+                    original_name: originalname, filename, audioname, artist, date, size, path, recipient_id, user_id, username
                 })
 
                 setTimeout(async () => {
@@ -127,7 +174,7 @@ class MusicController {
             await musicFile.destroy()
             return res.status(200).json({ message: "File deleted successfully"})
         } catch (err) {
-            console.log(err)
+            console.log(err) 
             return res.status(500).json({message: "Error while deleting file"})
         }
     }

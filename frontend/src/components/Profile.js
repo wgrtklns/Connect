@@ -7,6 +7,7 @@ const Profile = () => {
 
     useEffect(() => {
         fetchProfile(localStorage.getItem('username'))
+        // console.log(localStorage.getItem('username'))
     }, []);
 
     if (isLoading) {
@@ -21,7 +22,7 @@ const Profile = () => {
         <div className='list-container'>
             <h2>Profile</h2>
             <div className='profileCircle'>{profile.img}</div>
-            <h3 onClick={addFriends}>{profile.username}</h3>
+            <h3>{profile.username}</h3>
                 <h2>Music:</h2>
                 {music.length > 0 && music.map(({id, audioname, artist, img}, index) => (
                   <div key={index} className='item'>

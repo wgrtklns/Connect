@@ -20,6 +20,7 @@ const Track = () => {
 
     const changePlay = () => {
       if (isPlay) {
+        console.log(trackData)
         audioRef.current.pause()
       } else {
         audioRef.current.play()
@@ -42,7 +43,7 @@ const Track = () => {
             <h2>{trackData.user.username}</h2>
             <div className='profileCircle'>{trackData.user.img}</div>
             <button className='auth-button' style={{width: '266px', height: '50px', marginBottom: '30px'}} 
-            onClick={() => addFriends(trackData.user.id)}>Add to friends</button>
+            onClick={() => addFriends(trackData.user)}>Add to friends</button>
             <hr style={{backgroundColor: '#32ff7e', border: 'none', height: '1px', width: '300px', marginBottom: '30px'}}/>
           </div>
 
