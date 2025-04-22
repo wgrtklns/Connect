@@ -29,7 +29,9 @@ const MusicFile = sequelize.define('musicfile', {
     date: {type: DataTypes.DATE, allowNull: false},
     size: {type: DataTypes.INTEGER, allowNull: false},
     path: {type: DataTypes.STRING, allowNull: false},
-    recipient_id: {type: DataTypes.INTEGER, references: { model: 'users', key: 'id' }, allowNull: false}
+    recipient_id: {type: DataTypes.INTEGER, references: { model: 'users', key: 'id' }, allowNull: false},
+    user_id: {type: DataTypes.INTEGER, allowNull: false},
+    username: {type: DataTypes.STRING, allowNull: false}
 });
 
 const FavoriteList = sequelize.define('favorite_list', {

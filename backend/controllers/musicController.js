@@ -30,20 +30,36 @@ class MusicController {
                     return res.status(500).json({ message: "Error while uploading file" })
                 }
                 const { originalname, filename, path, size } = req.file
-                let { audioname, artist, recipient_id } = req.body // TODO: Add random id OR friends id
-                // TODO check if id != rec_id
-                if (!recipient_id) {
-                    const randomUsers = await User.findAll({
-                        order: Sequelize.fn('RANDOM'),  // Для PostgreSQL
-                        limit: 5  // Устанавливаем ограничение на количество пользователей
-                    });
-                
-                    if (randomUsers.length > 0) {
-                        // Выбираем случайного пользователя из списка
-                        const randomUser = randomUsers[Math.floor(Math.random() * randomUsers.length)];
-                        recipient_id = randomUser.id;
-                }}
+                let { audioname, artist, recipientType, mainId } = req.body
 
+                
+                // if (recipientType == 'friends') {
+                //     const randomUsers = await User.findAll({
+                //         order: Sequelize.fn('RANDOM'),
+                //         limit: 5
+                //     });
+                // } else {
+                //     const randomUsers = await User.findAll({
+                //         order: Sequelize.fn('RANDOM'),
+                //         limit: 5
+                //     });
+                // }
+                
+                const randomUsers = await User.findAll({
+                    order: Sequelize.fn('RANDOM'),
+                    limit: 5
+                });
+                
+                let recipient_id = null;
+
+                const filteredUsers = randomUsers.filter(user => user.dataValues.id !== mainId);
+                
+                if (filteredUsers.length > 0) {
+                    const randomUser = filteredUsers[Math.floor(Math.random() * filteredUsers.length)];
+                    recipient_id = randomUser.dataValues.id;
+                }
+
+                
                 const date = new Date()
 
                 const created_file = await MusicFile.create({
@@ -93,7 +109,7 @@ class MusicController {
             if (!musicFile) {
                 return res.status(500).json({message: "JSON file not found"})
             }
-            res.json({audioname: musicFile.audioname, artist: musicFile.artist})
+            res.json({audioname: musicFile.audioname, artist: musicFile.artist, user_id: musicFile.user_id, username: musicFile.username})
         } catch (err) {
             console.log(err)
             return res.status(500).json({message: "Error JSON music"})
