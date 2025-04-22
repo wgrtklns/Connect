@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import '../styles/List.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
@@ -7,9 +7,14 @@ import { useAppContext } from '../AppContext';
 const MusicList = () => {
     const {music, deleteMusic, isLoading, fetchMusic} = useAppContext();
 
+    useEffect(() => {
+            fetchMusic()
+    }, []);
+
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div className='list-container'>Loading...</div>;
     }
+
     return (
         <div className='list-container'>
             <h2>Music:</h2>

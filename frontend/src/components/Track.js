@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsDown, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
@@ -9,10 +9,14 @@ import { useAppContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
 
 const Track = () => {
-    const {trackData, isLoading, addFriends, addMusic} = useAppContext();
+    const {trackData, isLoading, addFriends, addMusic, fetchTrack} = useAppContext();
     const [isPlay, setPlay] = useState(true);
     const audioRef = useRef(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        fetchTrack()
+    }, []);
 
     const changePlay = () => {
       console.log(trackData)
@@ -24,9 +28,10 @@ const Track = () => {
       setPlay(!isPlay)
     }
     
-    if (isLoading ||  !trackData) {
-      return <div>Loading...</div>;
-    }
+    if (isLoading || !trackData) {
+      return <div className='list-container'>Loading...</div>;
+  }
+
     return (
         <div className='list-container'>
           <div className='profile-info-conatiner'>

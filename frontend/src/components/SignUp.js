@@ -20,8 +20,8 @@ const SignUp = () => {
       })
       if (result.data.token) {
         changeAuth(true)
-        fetchProfile(username)
-        localStorage.setItem('token', result.data.token)
+        await localStorage.setItem('token', result.data.token)
+        await fetchProfile(username)
         navigate('/profile')
       } else {
         console.error('Error SignUp')

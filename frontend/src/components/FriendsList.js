@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
 import '../styles/List.css';
@@ -6,11 +6,16 @@ import '../styles/Header.css'
 import { useAppContext } from '../AppContext';
 
 const FriendsList = () => {
-    const {friends, deleteFriends, isLoading} = useAppContext();
+    const {friends, deleteFriends, isLoading, fetchFriends} = useAppContext();
     
-    if (isLoading) {  
-        return <div>Loading...</div>;
-    } 
+    useEffect(() => {
+        fetchFriends()
+    }, []);
+
+    if (isLoading) {
+        return <div className='list-container'>Loading...</div>;
+    }
+
     return (
         <div className='list-container'>
             <h2>Friends:</h2>

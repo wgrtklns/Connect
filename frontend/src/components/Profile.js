@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../styles/List.css';
 import { useAppContext } from '../AppContext';
 
 const Profile = () => {
-    const {profile, music} = useAppContext();
+    const {profile, music, isLoading, fetchProfile} = useAppContext();
+
+    useEffect(() => {
+        fetchProfile(localStorage.getItem('username'))
+    }, []);
+
+    if (isLoading) {
+        return <div className='list-container'>Loading profile...</div>;
+    }
+
+    if (!profile) {
+        return <div className='list-container'>Profile not available</div>;
+    }
 
     return (
         <div className='list-container'>

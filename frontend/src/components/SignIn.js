@@ -18,8 +18,8 @@ const SignIn = () => {
       })
       if (result.data.token) {
         changeAuth(true)
-        fetchProfile(login)
-        localStorage.setItem('token', result.data.token)
+        await localStorage.setItem('token', result.data.token)
+        await fetchProfile(login)
         navigate('/profile')
       } else {
         console.error('Error SingIn')
