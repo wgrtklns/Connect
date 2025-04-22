@@ -9,7 +9,7 @@ import { useAppContext } from '../AppContext';
 import { useNavigate } from 'react-router-dom';
 
 const Track = () => {
-    const {trackData, isLoading, addFriends, addMusic, fetchTrack} = useAppContext();
+    const {trackData, isLoading, addFriends, addMusic, fetchTrack, authUser} = useAppContext();
     const [isPlay, setPlay] = useState(true);
     const audioRef = useRef(null);
     const navigate = useNavigate();
@@ -19,7 +19,6 @@ const Track = () => {
     }, []);
 
     const changePlay = () => {
-      console.log(trackData)
       if (isPlay) {
         audioRef.current.pause()
       } else {
@@ -30,15 +29,20 @@ const Track = () => {
     
     if (isLoading || !trackData) {
       return <div className='list-container'>Loading...</div>;
-  }
-
+    } else if (trackData.user.username === undefined) {
+      return (
+        <div className='list-container'>
+          <h2>Nobody sent you the track</h2>
+        </div>
+      )
+    }
     return (
         <div className='list-container'>
           <div className='profile-info-conatiner'>
             <h2>{trackData.user.username}</h2>
             <div className='profileCircle'>{trackData.user.img}</div>
             <button className='auth-button' style={{width: '266px', height: '50px', marginBottom: '30px'}} 
-            onClick={() => addFriends(trackData.user)}>Add to friends</button>
+            onClick={() => addFriends(trackData.user.id)}>Add to friends</button>
             <hr style={{backgroundColor: '#32ff7e', border: 'none', height: '1px', width: '300px', marginBottom: '30px'}}/>
           </div>
 

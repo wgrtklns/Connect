@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Route, Routes, BrowserRouter as Router, useLocation, useNavigate} from 'react-router-dom'
+import { Route, Routes, BrowserRouter, useLocation, useNavigate} from 'react-router-dom'
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -16,20 +16,21 @@ import { AppContextProvider, useAppContext } from './AppContext';
 function App() {
   return (
     <AppContextProvider>
-      <Router>
+      <BrowserRouter>
         <AppRoutes />
-      </Router>
+      </BrowserRouter>
     </AppContextProvider>    
   );
 }
 
 function AppRoutes() {
-  const {isAuth} = useAppContext()
+  const {isAuth, authUser} = useAppContext()
   const location = useLocation();
   const navigate = useNavigate()
   const shouldShowHeader = (location.pathname !== '/') && (location.pathname !== '/signin') && (location.pathname !== '/signup');
   const shouldShowFooter = (location.pathname !== '/') && (location.pathname !== '/signin') && (location.pathname !== '/signup') && (location.pathname !== '/track') && (location.pathname !== '/connect');
   useEffect(() => {
+    authUser()
     if (!isAuth) {
       navigate('/')
     }

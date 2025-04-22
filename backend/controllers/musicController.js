@@ -2,7 +2,7 @@ const {MusicFile, FavoriteList, User} = require('../models/models')
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
-const { Sequelize } = require('../db')
+const { Sequelize, random } = require('../db')
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

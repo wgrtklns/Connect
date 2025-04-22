@@ -104,6 +104,7 @@ export const AppContextProvider = ({children}) => {
             {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}
             )
             const profileImg =  getEmojiByUsername(username)
+
             setProfile({id: data.data.user_info.id, username: data.data.user_info.username,  img: profileImg})
             localStorage.setItem('username', data.data.user_info.username)
         } catch {
