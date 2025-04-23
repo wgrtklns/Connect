@@ -25,7 +25,7 @@ const Profile = () => {
             <h3>{profile.username}</h3>
                 <h2>Music:</h2>
                 {music.length > 0 && music.map(({id, audioname, artist, img}, index) => (
-                  <div key={index} className='item'>
+                  <div key={id} className='item' style={{backgroundColor: '#1c1c1c'}}>
                       {/* <div className='circle' style={{marginRight: 'auto'}}>{img}</div>
                       <span style={{marginTop: '15px', marginLeft: 'auto'}}>{username} <h5 style={{marginTop: '5px', fontWeight: 'lighter'}} className='abcc'>{artist}</h5></span> */}
                       <div className='circle'>{img}</div>
