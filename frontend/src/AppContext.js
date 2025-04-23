@@ -174,7 +174,7 @@ export const AppContextProvider = ({children}) => {
         }
     };
 
-    const authUser = async () => { // Проверка пользователся - работает?
+    const authUser = async () => { // Проверка пользователся - работает
         const token = localStorage.getItem('token')
 
         if (!token) {
@@ -199,7 +199,7 @@ export const AppContextProvider = ({children}) => {
         }
     }
 
-    const uploadMusic = async (formData) => { // Загрузка музыки на сервер
+    const uploadMusic = async (formData) => { // Загрузка музыки на сервер - работает
         try {
             const data = await axios.post(
                 'http://localhost:5012/api/music/upload_m',
